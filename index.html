@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PlanCode Studio | AI Space Planning</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="brand">PlanCode Studio <small>Site-aware space planning workspace</small></div><div class="pill">Concept planning · PDF report generator</div></header>
+<div class="wrap app-ui">
+ <div class="intro"><h1>Project brief & code-aware planning</h1><p>Enter site geometry, building use, storeys and space requirements. Build a preliminary space matrix and print a concept planning report to PDF. Uploads are used as project references in this browser session.</p></div>
+ <div class="layout">
+  <main>
+   <section class="card"><h2>01 · Project & site information</h2><p class="sub">Define the site, proposed use and governing jurisdiction.</p>
+    <div class="grid2"><div><label for="project">Project name</label><input id="project" placeholder="e.g., Proposed Mixed-Use Development"></div><div><label for="location">Project location / city</label><input id="location" placeholder="City, province, country"></div></div>
+    <div class="section-label">Development parameters</div>
+    <div class="grid2"><div><label for="type">Primary project type</label><select id="type"><option>Residential</option><option>Commercial</option><option>Mixed-use</option><option>Office</option><option>Retail</option><option>Hospitality</option><option>Institutional / Educational</option><option>Healthcare</option><option>Industrial</option><option>Other</option></select></div><div><label for="subtype">Project subtype / occupancy</label><input id="subtype" placeholder="e.g., apartments over retail"></div></div>
+    <div class="grid3" style="margin-top:13px"><div><label for="lot">Total lot area (m²)</label><input id="lot" type="number" min="0" step=".01" placeholder="e.g., 1200"></div><div><label for="gfa">Target gross floor area (m²)</label><input id="gfa" type="number" min="0" step=".01" placeholder="e.g., 3600"></div><div><label for="floors">Number of floors</label><input id="floors" type="number" min="1" step="1" value="3"></div></div>
+    <div class="grid3" style="margin-top:13px"><div><label for="height">Floor-to-floor height (m)</label><input id="height" type="number" min="0" step=".01" value="3.3"></div><div><label for="basement">Basements</label><input id="basement" type="number" min="0" step="1" value="0"></div><div><label for="coverage">Target site coverage (%)</label><input id="coverage" type="number" min="0" max="100" step=".1" placeholder="Optional"></div></div>
+    <div class="section-label">Lot plan bearings & dimensions</div>
+    <p class="help">Enter each boundary bearing and length from the survey/lot plan. Use the surveyor's notation and units; do not assume bearings form a closed polygon until checked.</p>
+    <div class="grid2"><div><label for="bearing1">Line 1 bearing</label><input id="bearing1" placeholder="e.g., N 25° 10' E"></div><div><label for="length1">Line 1 length (m)</label><input id="length1" type="number" step=".001" placeholder="Length"></div><div><label for="bearing2">Line 2 bearing</label><input id="bearing2" placeholder="e.g., S 64° 50' E"></div><div><label for="length2">Line 2 length (m)</label><input id="length2" type="number" step=".001" placeholder="Length"></div><div><label for="bearing3">Line 3 bearing</label><input id="bearing3" placeholder="Bearing"></div><div><label for="length3">Line 3 length (m)</label><input id="length3" type="number" step=".001" placeholder="Length"></div><div><label for="bearing4">Line 4 bearing</label><input id="bearing4" placeholder="Bearing"></div><div><label for="length4">Line 4 length (m)</label><input id="length4" type="number" step=".001" placeholder="Length"></div></div>
+    <div class="help">For irregular sites with more than four segments, include the full bearings-and-distances schedule in the uploaded lot plan or notes.</div>
+   </section>
+   <section class="card"><h2>02 · Codes & planning criteria</h2><p class="sub">Choose the code framework to check. Confirm adopted editions and local amendments with the authority having jurisdiction.</p>
+    <div class="grid2"><div><label for="code">Code basis</label><select id="code"><option>Philippines — National Building Code (PD 1096) + local ordinances</option><option>International — IBC / IEBC (edition to be specified)</option><option>International — IBC + NFPA references (edition to be specified)</option><option>Other country / jurisdiction</option><option>Custom project code matrix</option></select></div><div><label for="edition">Edition / local ordinance / zoning</label><input id="edition" placeholder="e.g., adopted edition, zoning classification"></div></div>
+    <div class="grid2" style="margin-top:13px"><div><label for="occupancy">Occupancy / use groups</label><input id="occupancy" placeholder="e.g., residential, mercantile, business"></div><div><label for="constraints">Known site constraints</label><input id="constraints" placeholder="Easements, setbacks, height limit, ROW"></div></div>
+    <div class="section-label">Reference uploads</div>
+    <div class="drop"><strong>Upload lot plan, zoning documents, design brief or space requirements</strong><div class="help">PDF, DOCX, TXT, XLSX, CSV, JPG or PNG — file names are included in the report; this demo does not extract their contents automatically.</div><input id="files" type="file" multiple accept=".pdf,.doc,.docx,.txt,.xlsx,.xls,.csv,.jpg,.jpeg,.png"><div id="filelist" class="filelist">No files selected</div></div>
+   </section>
+   <section class="card"><h2>03 · Space requirement prompt</h2><p class="sub">Paste the brief here or upload it above. Add room names, target areas, adjacencies, counts, special uses and operational requirements.</p>
+    <label for="requirements">Space planning requirements / design prompt</label><textarea id="requirements" rows="7" placeholder="Example: Provide ground-floor retail, lobby, service/loading, accessible toilets and vertical circulation. Upper floors: 24 residential units, shared amenity, refuse room and MEP spaces. Separate public and residential access. Include target areas, room counts, adjacency priorities and any required parking."></textarea>
+    <div class="grid2" style="margin-top:13px"><div><label for="parking">Parking requirement</label><input id="parking" placeholder="e.g., local zoning ratio / TBD"></div><div><label for="circulation">Circulation / core preference</label><input id="circulation" placeholder="e.g., 2 stairs, lift, service core"></div></div>
+   </section>
+  </main>
+  <aside>
+   <section class="card"><h2>Project snapshot</h2><p class="sub">Live calculations from the fields entered.</p>
+    <div class="stats"><div class="stat"><span>Lot area</span><strong id="sLot">—</strong></div><div class="stat"><span>Target GFA</span><strong id="sGfa">—</strong></div><div class="stat"><span>Floors</span><strong id="sFloors">3</strong></div><div class="stat"><span>Avg. floor plate</span><strong id="sPlate">—</strong></div></div>
+    <div class="note"><b>Important:</b> The app creates a preliminary planning report, not a permit-ready design or legal code certification. Code checks requiring jurisdiction-specific values remain marked “Verify”.</div>
+   </section>
+   <section class="card"><h2>Space matrix builder</h2><p class="sub">Add room/space requirements to the draft matrix.</p>
+    <div><label for="spaceName">Space / room name</label><input id="spaceName" placeholder="e.g., Retail unit"></div>
+    <div class="grid2" style="margin-top:12px"><div><label for="spaceCount">Quantity</label><input id="spaceCount" type="number" min="1" value="1"></div><div><label for="spaceArea">Area each (m²)</label><input id="spaceArea" type="number" min="0" step=".1" placeholder="e.g., 45"></div></div>
+    <div style="margin-top:12px"><label for="spaceFloor">Floor / zone</label><input id="spaceFloor" placeholder="e.g., Ground floor"></div>
+    <div style="margin-top:12px"><label for="spaceNotes">Code / adjacency / notes</label><input id="spaceNotes" placeholder="e.g., near lobby; occupant load verify"></div>
+    <div class="actions"><button class="btn secondary" id="addSpace">+ Add space</button></div>
+    <div id="matrixPreview"></div>
+   </section>
+   <section class="card"><h2>Generate deliverable</h2><p class="sub">Create a printable report with project brief, lot bearings, space matrix, preliminary code checklist and design assumptions.</p>
+    <div class="actions"><button class="btn primary" id="generate">Generate report / Save as PDF</button><button class="btn ghost" id="reset">Reset form</button></div>
+    <p class="help">In the print dialog, select “Save as PDF”. The app runs locally in your browser; uploaded file contents are not sent to a server.</p>
+   </section>
+  </aside>
+ </div>
+</div>
+<div id="report"></div>
+<footer class="app-ui">PlanCode Studio · Concept planning prototype · Verify all dimensions, zoning and code interpretations with licensed professionals and the local authority.</footer>
+<script src="app.js"></script>
+</body></html>
